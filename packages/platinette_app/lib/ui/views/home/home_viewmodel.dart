@@ -1,14 +1,16 @@
+import 'package:platinette_app/app/locator.dart';
+import 'package:platinette_app/services/player_service.dart';
 import 'package:stacked/stacked.dart';
 
-class HomeViewModel extends BaseViewModel {
-  String _title = 'Home view';
-  String get title => _title;
+class HomeViewModel extends ReactiveViewModel {
+  final _playerService = locator<PlayerService>();
+  PlayerState get playerState => _playerService.state;
 
-  int _counter = 0;
-  int get counter => _counter;
-
-  void updateCounter() {
-    _counter++;
+  void switchPlayerState() {
+    _playerService.switchPlayerState();
     notifyListeners();
   }
+
+  @override
+  List<ReactiveServiceMixin> get reactiveServices => [_playerService];
 }
