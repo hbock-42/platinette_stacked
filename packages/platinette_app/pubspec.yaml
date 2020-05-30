@@ -22,6 +22,9 @@ dependencies:
   injectable:
   observable_ish: ^2.1.4
 
+  file_chooser:
+    path: ../../flutter-desktop-embedding/plugins/file_chooser
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
