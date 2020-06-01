@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:platinette_app/ui/widgets/player_button/player_button.dart';
 import 'package:stacked/stacked.dart';
 
 import 'home_viewmodel.dart';
@@ -47,22 +48,21 @@ class _HomeViewState extends State<HomeView> {
       isPortrait ? halfWidth - halfButtonBarSize : buttonsStart;
   double get buttonsTop =>
       isPortrait ? buttonsStart : halfHeight - halfButtonBarSize;
-  // double get buttonsRight =>
-  //     isPortrait ? halfWidth - halfButtonBarSize : buttonsEndMargin;
-  // double get buttonsBottom =>
-  //     isPortrait ? buttonsEndMargin : halfHeight - halfButtonBarSize;
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeViewModel>.reactive(
       builder: (context, model, child) {
         computeSizes(model);
-        return Stack(
-          alignment: isPortrait ? Alignment.topCenter : Alignment.centerLeft,
-          children: [
-            buildVinyl(),
-            buildButtons(model),
-          ],
+        return Container(
+          color: Colors.purple,
+          child: Stack(
+            alignment: isPortrait ? Alignment.topCenter : Alignment.centerLeft,
+            children: [
+              buildVinyl(),
+              buildButtons(model),
+            ],
+          ),
         );
       },
       viewModelBuilder: () => HomeViewModel(),
@@ -109,10 +109,15 @@ class _HomeViewState extends State<HomeView> {
     var children = List<Widget>();
     children.add(fakeButton(color: Colors.green, size: buttonSize));
     children.add(buttonSpacer());
-    children.add(fakeButton(
-        color: Colors.red,
-        onClick: () => model.switchPlayerState(),
-        size: playerButtonSize));
+    children.add(AnimatedContainer(
+      duration: animationDuration,
+      curve: animationCurve,
+      width: playerButtonSize,
+      height: playerButtonSize,
+      child: PlayerButton(
+        animationDuration: animationDuration * 2,
+      ),
+    ));
     children.add(buttonSpacer());
     children.add(fakeButton(color: Colors.blue, size: buttonSize));
     return AnimatedPositioned(
