@@ -27,6 +27,10 @@ class _HomeViewState extends State<HomeView> {
   double vinylStartMargin;
   double get vinylLeft => isPortrait ? halfWidth - halfVinyl : vinylStartMargin;
   double get vinylTop => isPortrait ? vinylStartMargin : halfHeight - halfVinyl;
+  double get vinylEnd =>
+      isPortrait ? vinylTop + vinylSize : vinylLeft + vinylSize;
+  double get vinylCenterCircleEnd =>
+      isPortrait ? vinylTop + vinylSize * 0.75 : vinylLeft + vinylSize * 0.75;
 
   // buttons
   double buttonSize;
@@ -34,14 +38,19 @@ class _HomeViewState extends State<HomeView> {
   double buttonSpacing;
   double playerButtonScale;
   double buttonsEndMargin;
+  double buttonsStart;
   double get playerButtonSize => buttonSize * playerButtonScale;
   double get buttonsBarSize =>
       2 * (buttonSpacing + buttonSize) + playerButtonSize;
   double get halfButtonBarSize => buttonsBarSize / 2;
-  double get buttonsRight =>
-      isPortrait ? halfWidth - halfButtonBarSize : buttonsEndMargin;
-  double get buttonsBottom =>
-      isPortrait ? buttonsEndMargin : halfHeight - halfButtonBarSize;
+  double get buttonsLeft =>
+      isPortrait ? halfWidth - halfButtonBarSize : buttonsStart;
+  double get buttonsTop =>
+      isPortrait ? buttonsStart : halfHeight - halfButtonBarSize;
+  // double get buttonsRight =>
+  //     isPortrait ? halfWidth - halfButtonBarSize : buttonsEndMargin;
+  // double get buttonsBottom =>
+  //     isPortrait ? buttonsEndMargin : halfHeight - halfButtonBarSize;
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +84,9 @@ class _HomeViewState extends State<HomeView> {
     buttonSize = min(buttonSize, 75);
     buttonSpacing = buttonSize * 0.6;
     playerButtonScale = model.isPlaying ? 2.5 : 1;
+    buttonsStart = model.isPlaying
+        ? vinylCenterCircleEnd + bigSize * 0.05
+        : vinylEnd + bigSize * 0.1;
     buttonsEndMargin = bigSize * 0.1;
   }
 
@@ -106,8 +118,8 @@ class _HomeViewState extends State<HomeView> {
     return AnimatedPositioned(
       duration: animationDuration,
       curve: animationCurve,
-      bottom: buttonsBottom,
-      right: buttonsRight,
+      top: buttonsTop,
+      left: buttonsLeft,
       child: isPortrait
           ? Row(
               children: children,
