@@ -116,15 +116,21 @@ class _PlayerButtonState extends State<PlayerButton>
     @required BoxConstraints constraints,
     @required PlayerButtonViewModel model,
   }) =>
-      Container(
-        width: sizeRatioMiddleCircle * constraints.maxWidth,
-        height: sizeRatioMiddleCircle * constraints.maxHeight,
-        child: CircularTimer(
-          backgroundColor: Colors.transparent,
-          color: colorAnimation.value,
-          fillValue: fillMiddleCircleAnimation.value,
-          strokeWidth: littleStrokeWidth,
-          child: child,
+      IgnorePointer(
+        ignoring: model.isPlaying,
+        child: Listener(
+          onPointerUp: (_) => model.switchPlayerState(),
+          child: Container(
+            width: sizeRatioMiddleCircle * constraints.maxWidth,
+            height: sizeRatioMiddleCircle * constraints.maxHeight,
+            child: CircularTimer(
+              backgroundColor: Colors.transparent,
+              color: colorAnimation.value,
+              fillValue: fillMiddleCircleAnimation.value,
+              strokeWidth: littleStrokeWidth,
+              child: child,
+            ),
+          ),
         ),
       );
 
