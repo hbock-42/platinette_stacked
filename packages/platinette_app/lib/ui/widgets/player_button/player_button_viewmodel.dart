@@ -5,6 +5,7 @@ import 'package:stacked/stacked.dart';
 class PlayerButtonViewModel extends ReactiveViewModel {
   PlayerService _playerService = locator<PlayerService>();
   bool get isPlaying => _playerService.state == PlayerState.playing;
+  int get rpm => _playerService.rpm;
 
   void switchPlayerState() {
     _playerService.switchPlayerState();
