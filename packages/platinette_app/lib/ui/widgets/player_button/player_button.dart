@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:platinette_app/ui/widgets/circular_gauge.dart/circular_gauge.dart';
+import 'package:platinette_app/ui/widgets/deserve_package/animated_rotation.dart';
 import 'package:platinette_app/ui/widgets/player_button/player_button_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
@@ -33,10 +34,16 @@ class _PlayerButtonState extends State<PlayerButton>
   Animation<Color> colorAnimation;
   Animation<double> fillInnerCircleAnimation;
   Animation<double> fillMiddleCircleAnimation;
-  Animation<double> textScaleAnimation;
+  Animation<double> textOpacityAnimation;
+  Animation<double> dotScaleAnimation;
+  Animation<double> dotOpacityAnimation;
   Duration get animateToDuration => oldIsPlaying
       ? widget.animationDuration * (controller.value)
       : widget.animationDuration * (1 - controller.value);
+  int positionId;
+  double middleCircleDiameter;
+  double innerCircleDiameter;
+  double dotDiameter;
 
   @override
   void initState() {
@@ -57,11 +64,18 @@ class _PlayerButtonState extends State<PlayerButton>
         CurvedAnimation(
             parent: controller,
             curve: Interval(0.0, 0.6, curve: Curves.easeInOut)));
-    textScaleAnimation = Tween<double>(begin: 0, end: 1).animate(
+    textOpacityAnimation = Tween<double>(begin: 0, end: 1).animate(
+        CurvedAnimation(
+            parent: controller,
+            curve: Interval(0.5, 1.0, curve: Curves.easeInOut)));
+    dotScaleAnimation = Tween<double>(begin: 0.3, end: 1).animate(
         CurvedAnimation(
             parent: controller,
             curve: Interval(0.6, 0.8, curve: Curves.easeInOut)));
-    // colorAnimation = Tween(begin: Colors.black, end: Colors.white).animate(CurvedAnimation(parent: controller, curve: Curves.linear));
+    dotOpacityAnimation = Tween<double>(begin: 0, end: 1).animate(
+        CurvedAnimation(
+            parent: controller,
+            curve: Interval(0.6, 1.0, curve: Curves.easeInOut)));
   }
 
   @override
@@ -71,7 +85,7 @@ class _PlayerButtonState extends State<PlayerButton>
           ViewModelBuilder<PlayerButtonViewModel>.reactive(
         builder: (context, model, child) {
           setIsPlaying(model);
-          computeSizes(constraints);
+          computeSizes(constraints, model);
           return AnimatedBuilder(
             animation: controller,
             builder: (context, child) {
@@ -82,6 +96,7 @@ class _PlayerButtonState extends State<PlayerButton>
                   buildMiddleCircle(model: model, constraints: constraints),
                   buildInnerCircle(constraints: constraints, model: model),
                   ...buildTexts(model: model, constraints: constraints),
+                  buildDot(),
                 ],
               );
             },
@@ -108,10 +123,14 @@ class _PlayerButtonState extends State<PlayerButton>
     }
   }
 
-  void computeSizes(BoxConstraints constraints) {
+  void computeSizes(BoxConstraints constraints, PlayerButtonViewModel model) {
     _fontSize = 0.141 * constraints.maxWidth;
     _textStyle = _textStyle.copyWith(fontSize: _fontSize);
     _textMargin = 0.068 * constraints.maxWidth;
+    innerCircleDiameter = sizeRatioInnerCircle * constraints.maxWidth;
+    middleCircleDiameter = sizeRatioMiddleCircle * constraints.maxWidth;
+    dotDiameter = (middleCircleDiameter - innerCircleDiameter) / 2 - 3;
+    mapRpmToPositions(model.rpm);
   }
 
   Widget buildOuterCircle({
@@ -142,8 +161,8 @@ class _PlayerButtonState extends State<PlayerButton>
         child: Listener(
           onPointerUp: (_) => model.switchPlayerState(),
           child: Container(
-            width: sizeRatioMiddleCircle * constraints.maxWidth,
-            height: sizeRatioMiddleCircle * constraints.maxHeight,
+            width: middleCircleDiameter,
+            height: middleCircleDiameter,
             child: CircularTimer(
               backgroundColor: Colors.transparent,
               color: colorAnimation.value,
@@ -162,8 +181,8 @@ class _PlayerButtonState extends State<PlayerButton>
       Listener(
         onPointerUp: (_) => model.switchPlayerState(),
         child: Container(
-          width: sizeRatioInnerCircle * constraints.maxWidth,
-          height: sizeRatioInnerCircle * constraints.maxHeight,
+          width: innerCircleDiameter,
+          height: innerCircleDiameter,
           child: CircularTimer(
             backgroundColor: Colors.transparent,
             color: colorAnimation.value,
@@ -180,6 +199,33 @@ class _PlayerButtonState extends State<PlayerButton>
           ),
         ),
       );
+
+  Widget buildDot() {
+    return Opacity(
+      opacity: dotOpacityAnimation.value,
+      child: AnimatedRotation(
+        curve: Curves.elasticOut,
+        duration: Duration(milliseconds: 1500),
+        angle: pi * 2 * positionId / 3 + pi,
+        child: Transform.translate(
+          offset: Offset(0, (middleCircleDiameter - dotDiameter) / 2 - 2),
+          child: Transform.scale(
+            scale: dotScaleAnimation.value,
+            child: SizedBox(
+              width: dotDiameter,
+              height: dotDiameter,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(dotDiameter),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   List<Widget> buildTexts({
     @required PlayerButtonViewModel model,
@@ -207,8 +253,8 @@ class _PlayerButtonState extends State<PlayerButton>
                 (_textStyle.fontSize / 2) -
                 _textMargin +
                 3),
-        child: Transform.scale(
-          scale: textScaleAnimation.value,
+        child: Opacity(
+          opacity: textOpacityAnimation.value,
           child: Listener(
             onPointerUp: (_) => onPointerUp(),
             child: Text(text, style: _textStyle),
@@ -224,5 +270,15 @@ class _PlayerButtonState extends State<PlayerButton>
   Offset getTranslation(int positionId, double distance) {
     double sign = positionId == 0 ? -1 : 1;
     return Offset(0, sign * distance);
+  }
+
+  void mapRpmToPositions(int rpm) {
+    if (rpm == 33) {
+      positionId = 0;
+    } else if (rpm == 45) {
+      positionId = 1;
+    } else if (rpm == 78) {
+      positionId = 2;
+    }
   }
 }
