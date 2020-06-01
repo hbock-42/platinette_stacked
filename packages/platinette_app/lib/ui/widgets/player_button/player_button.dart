@@ -32,7 +32,6 @@ class _PlayerButtonState extends State<PlayerButton>
 
   bool oldIsPlaying;
   AnimationController controller;
-  Animation<Color> colorAnimation;
   Animation<double> fillInnerCircleAnimation;
   Animation<double> fillMiddleCircleAnimation;
   Animation<double> fillOuterCircleAnimation;
@@ -57,11 +56,6 @@ class _PlayerButtonState extends State<PlayerButton>
       duration: widget.animationDuration,
     );
 
-    colorAnimation = ColorTween(begin: Colors.black, end: Colors.white).animate(
-        CurvedAnimation(
-            parent: controller,
-            curve: Interval(0.0, 1.0, curve: Curves.easeOutCirc),
-            reverseCurve: Curves.easeOut));
     fillOuterOverCircleAnimation = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(
             parent: controller,
