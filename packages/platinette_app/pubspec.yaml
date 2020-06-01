@@ -22,6 +22,8 @@ dependencies:
   injectable:
   observable_ish: ^2.1.4
 
+  google_fonts: ^1.1.0
+
   file_chooser:
     path: ../../flutter-desktop-embedding/plugins/file_chooser
 
@@ -38,3 +40,4 @@ flutter:
 
   assets:
     - assets/images/
+    - google_fonts/

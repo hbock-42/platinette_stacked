@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:platinette_app/ui/widgets/deserve_package/animated_rotation.dart';
 import 'package:platinette_app/ui/widgets/deserve_package/circular_gauge.dart/circular_gauge.dart';
 import 'package:platinette_app/ui/widgets/deserve_package/curves/elastic_out_flatten_curve.dart';
@@ -18,7 +19,7 @@ class PlayerButton extends StatefulWidget {
 
 class _PlayerButtonState extends State<PlayerButton>
     with SingleTickerProviderStateMixin {
-  static const double littleStrokeWidth = 1;
+  static const double littleStrokeWidth = 0.75;
   static const double sizeRatioMiddleCircle = 0.556;
   static const double sizeRatioInnerCircle = 0.282;
 
@@ -26,6 +27,7 @@ class _PlayerButtonState extends State<PlayerButton>
     color: Color(0xFFF4F8F8),
     fontSize: 1,
     decoration: TextDecoration.none,
+    fontWeight: FontWeight.w100,
   );
   double _textMargin;
   double _fontSize;
@@ -59,31 +61,31 @@ class _PlayerButtonState extends State<PlayerButton>
     fillOuterOverCircleAnimation = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(
             parent: controller,
-            curve: Interval(0.4, 1.0, curve: Curves.easeInOut)));
+            curve: Interval(0.4, 0.8, curve: Curves.linear)));
     fillOuterCircleAnimation = Tween<double>(begin: 1, end: 0).animate(
         CurvedAnimation(
             parent: controller,
-            curve: Interval(0.0, 0.4, curve: Curves.easeInOut)));
+            curve: Interval(0.0, 0.4, curve: Curves.linear)));
     fillMiddleCircleAnimation = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(
             parent: controller,
-            curve: Interval(0.2, 0.8, curve: Curves.easeInOut)));
+            curve: Interval(0.4, 0.8, curve: Curves.linear)));
     fillInnerCircleAnimation = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(
             parent: controller,
-            curve: Interval(0.0, 0.6, curve: Curves.easeInOut)));
+            curve: Interval(0.4, 0.8, curve: Curves.linear)));
     textOpacityAnimation = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(
             parent: controller,
-            curve: Interval(0.6, 0.8, curve: Curves.easeInCubic)));
+            curve: Interval(0.82, 0.83, curve: Curves.easeInCubic)));
     dotScaleAnimation = Tween<double>(begin: 0.3, end: 1).animate(
         CurvedAnimation(
             parent: controller,
-            curve: Interval(0.6, 0.8, curve: Curves.easeInOut)));
+            curve: Interval(0.82, 0.83, curve: Curves.easeInOut)));
     dotOpacityAnimation = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(
             parent: controller,
-            curve: Interval(0.6, 1.0, curve: Curves.easeInOut)));
+            curve: Interval(0.82, 0.83, curve: Curves.easeInOut)));
   }
 
   @override
@@ -138,9 +140,10 @@ class _PlayerButtonState extends State<PlayerButton>
   }
 
   void computeSizes(BoxConstraints constraints, PlayerButtonViewModel model) {
-    _fontSize = 0.141 * constraints.maxWidth;
+    _fontSize = 0.121 * constraints.maxWidth;
     _textStyle = _textStyle.copyWith(fontSize: _fontSize);
-    _textMargin = 0.068 * constraints.maxWidth;
+    _textStyle = GoogleFonts.poppins(textStyle: _textStyle);
+    _textMargin = 0.072 * constraints.maxWidth;
     innerCircleDiameter = sizeRatioInnerCircle * constraints.maxWidth;
     middleCircleDiameter = sizeRatioMiddleCircle * constraints.maxWidth;
     dotDiameter = (middleCircleDiameter - innerCircleDiameter) / 2 - 3;
@@ -152,6 +155,7 @@ class _PlayerButtonState extends State<PlayerButton>
         color: Colors.white,
         fillValue: fillOuterOverCircleAnimation.value,
         strokeWidth: littleStrokeWidth,
+        clockWise: true,
       );
 
   Widget buildOuterCircle({
@@ -166,7 +170,7 @@ class _PlayerButtonState extends State<PlayerButton>
             color: Colors.black,
             fillValue: fillOuterCircleAnimation.value,
             strokeWidth: littleStrokeWidth,
-            clockWise: true,
+            clockWise: false,
           ),
         ),
       );
@@ -188,6 +192,7 @@ class _PlayerButtonState extends State<PlayerButton>
               color: Colors.white,
               fillValue: fillMiddleCircleAnimation.value,
               strokeWidth: littleStrokeWidth,
+              clockWise: true,
             ),
           ),
         ),
@@ -207,7 +212,8 @@ class _PlayerButtonState extends State<PlayerButton>
             // color: colorAnimation.value,
             color: Colors.white,
             fillValue: fillInnerCircleAnimation.value,
-            strokeWidth: 2,
+            strokeWidth: 1.5,
+            clockWise: true,
             child: Text(
               model.isPlaying ? "pl" : "pa",
               style: TextStyle(

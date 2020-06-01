@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:platinette_app/ui/widgets/player_button/player_button.dart';
-import 'package:platinette_app/ui/widgets/small_buttons.dart/load_button.dart';
 import 'package:stacked/stacked.dart';
 
 import 'home_viewmodel.dart';
@@ -13,8 +12,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  Duration animationDuration = Duration(milliseconds: 300);
-  Curve animationCurve = Curves.easeIn;
+  Duration animationDuration = Duration(milliseconds: 500);
+  Curve animationCurve = Curves.easeInCubic;
 
   // screen
   double width;
@@ -82,9 +81,9 @@ class _HomeViewState extends State<HomeView> {
     vinylStartMargin = model.isPlaying ? -vinylSize * 0.25 : bigSize * 0.1;
 
     buttonSize = smallSize / 6;
-    buttonSize = min(buttonSize, 75);
-    buttonSpacing = buttonSize * 0.6;
-    playerButtonScale = model.isPlaying ? 2.5 : 1;
+    buttonSize = min(buttonSize, 65);
+    buttonSpacing = buttonSize * 1;
+    playerButtonScale = model.isPlaying ? 3 : 1;
     buttonsStart = model.isPlaying
         ? vinylCenterCircleEnd + bigSize * 0.05
         : vinylEnd + bigSize * 0.1;
@@ -108,14 +107,14 @@ class _HomeViewState extends State<HomeView> {
 
   Widget buildButtons(HomeViewModel model) {
     var children = List<Widget>();
-    children.add(Container(
-      width: buttonSize,
-      height: buttonSize,
-      child: LoadButton(
-        animationDuration: animationDuration * 2,
-      ),
-    ));
-    // children.add(fakeButton(color: Colors.green, size: buttonSize));
+    // children.add(Container(
+    //   width: buttonSize,
+    //   height: buttonSize,
+    //   child: LoadButton(
+    //     animationDuration: animationDuration * 2,
+    //   ),
+    // ));
+    children.add(fakeButton(color: Colors.green, size: buttonSize));
     children.add(buttonSpacer());
     children.add(AnimatedContainer(
       duration: animationDuration,
@@ -123,7 +122,7 @@ class _HomeViewState extends State<HomeView> {
       width: playerButtonSize,
       height: playerButtonSize,
       child: PlayerButton(
-        animationDuration: animationDuration * 2,
+        animationDuration: animationDuration * 1,
       ),
     ));
     children.add(buttonSpacer());
@@ -157,7 +156,7 @@ class _HomeViewState extends State<HomeView> {
           height: size,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(size),
-            border: Border.all(color: Colors.black),
+            border: Border.all(color: Colors.white),
           ),
         ),
       );
