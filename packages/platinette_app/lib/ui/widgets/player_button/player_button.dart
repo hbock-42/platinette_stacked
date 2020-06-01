@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:platinette_app/ui/widgets/circular_gauge.dart/circular_gauge.dart';
 import 'package:platinette_app/ui/widgets/deserve_package/animated_rotation.dart';
+import 'package:platinette_app/ui/widgets/deserve_package/curves/elastic_out_flatten_curve.dart';
 import 'package:platinette_app/ui/widgets/player_button/player_button_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
@@ -54,8 +55,11 @@ class _PlayerButtonState extends State<PlayerButton>
       duration: widget.animationDuration,
     );
 
-    colorAnimation =
-        ColorTween(begin: Colors.black, end: Colors.white).animate(controller);
+    colorAnimation = ColorTween(begin: Colors.black, end: Colors.white).animate(
+        CurvedAnimation(
+            parent: controller,
+            curve: Interval(0.0, 1.0, curve: Curves.easeOutCirc),
+            reverseCurve: Curves.easeOut));
     fillMiddleCircleAnimation = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(
             parent: controller,
@@ -144,6 +148,7 @@ class _PlayerButtonState extends State<PlayerButton>
           child: CircularTimer(
             backgroundColor: Colors.transparent,
             color: colorAnimation.value,
+            // color: model.isPlaying ? Colors.white : Colors.black,
             fillValue: 1,
             strokeWidth: littleStrokeWidth,
             child: child,
@@ -165,7 +170,8 @@ class _PlayerButtonState extends State<PlayerButton>
             height: middleCircleDiameter,
             child: CircularTimer(
               backgroundColor: Colors.transparent,
-              color: colorAnimation.value,
+              // color: colorAnimation.value,
+              color: Colors.white,
               fillValue: fillMiddleCircleAnimation.value,
               strokeWidth: littleStrokeWidth,
               child: child,
@@ -185,7 +191,8 @@ class _PlayerButtonState extends State<PlayerButton>
           height: innerCircleDiameter,
           child: CircularTimer(
             backgroundColor: Colors.transparent,
-            color: colorAnimation.value,
+            // color: colorAnimation.value,
+            color: Colors.white,
             fillValue: fillInnerCircleAnimation.value,
             strokeWidth: 2,
             child: Text(
@@ -204,8 +211,8 @@ class _PlayerButtonState extends State<PlayerButton>
     return Opacity(
       opacity: dotOpacityAnimation.value,
       child: AnimatedRotation(
-        curve: Curves.elasticOut,
-        duration: Duration(milliseconds: 1500),
+        curve: ElasticOutFlattenCurve(),
+        duration: Duration(milliseconds: 1900),
         angle: pi * 2 * positionId / 3 + pi,
         child: Transform.translate(
           offset: Offset(0, (middleCircleDiameter - dotDiameter) / 2 - 2),
