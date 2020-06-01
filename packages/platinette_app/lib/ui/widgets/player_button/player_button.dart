@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:platinette_app/ui/widgets/circular_gauge.dart/circular_gauge.dart';
 import 'package:platinette_app/ui/widgets/deserve_package/animated_rotation.dart';
+import 'package:platinette_app/ui/widgets/deserve_package/circular_gauge.dart/circular_gauge.dart';
 import 'package:platinette_app/ui/widgets/deserve_package/curves/elastic_out_flatten_curve.dart';
 import 'package:platinette_app/ui/widgets/player_button/player_button_viewmodel.dart';
 import 'package:stacked/stacked.dart';
@@ -87,6 +87,12 @@ class _PlayerButtonState extends State<PlayerButton>
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) =>
@@ -126,7 +132,6 @@ class _PlayerButtonState extends State<PlayerButton>
       controller.animateTo(
         model.isPlaying ? 1.0 : 0.0,
         duration: animateToDuration,
-        // duration: widget.animationDuration,
       );
       oldIsPlaying = model.isPlaying;
     }

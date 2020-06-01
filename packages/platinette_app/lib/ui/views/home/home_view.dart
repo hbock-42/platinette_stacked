@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:platinette_app/ui/widgets/player_button/player_button.dart';
+import 'package:platinette_app/ui/widgets/small_buttons.dart/load_button.dart';
 import 'package:stacked/stacked.dart';
 
 import 'home_viewmodel.dart';
@@ -107,7 +108,14 @@ class _HomeViewState extends State<HomeView> {
 
   Widget buildButtons(HomeViewModel model) {
     var children = List<Widget>();
-    children.add(fakeButton(color: Colors.green, size: buttonSize));
+    children.add(Container(
+      width: buttonSize,
+      height: buttonSize,
+      child: LoadButton(
+        animationDuration: animationDuration * 2,
+      ),
+    ));
+    // children.add(fakeButton(color: Colors.green, size: buttonSize));
     children.add(buttonSpacer());
     children.add(AnimatedContainer(
       duration: animationDuration,
@@ -149,7 +157,7 @@ class _HomeViewState extends State<HomeView> {
           height: size,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(size),
-            color: color,
+            border: Border.all(color: Colors.black),
           ),
         ),
       );
