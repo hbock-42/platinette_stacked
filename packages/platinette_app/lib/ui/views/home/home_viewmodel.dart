@@ -4,9 +4,10 @@ import 'package:stacked/stacked.dart';
 
 class HomeViewModel extends ReactiveViewModel {
   final _playerService = locator<PlayerService>();
-  PlayerState get playerState => _playerService.state;
+  bool get isPlaying => _playerService.state == PlayerState.playing;
 
   void switchPlayerState() {
+    print("switched");
     _playerService.switchPlayerState();
     notifyListeners();
   }

@@ -23,10 +23,12 @@ class PlayerService with ReactiveServiceMixin {
 
   void play() {
     print('PlayerService: play');
+    _state.value = PlayerState.playing;
   }
 
   void pause() {
     print('PlayerService: pause');
+    _state.value = PlayerState.paused;
   }
 }
 
