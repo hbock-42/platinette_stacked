@@ -7,10 +7,12 @@ class CircularGaugePainter extends CustomPainter {
   final bool isForeground;
   final double tempStrokeWidth;
   final double tempFillValue;
+  final bool clockWise;
 
   const CircularGaugePainter({
     @required this.color,
     @required double strokeWidth,
+    @required this.clockWise,
     this.isForeground = false,
     double fillValue,
   })  : tempStrokeWidth = strokeWidth,
@@ -42,7 +44,7 @@ class CircularGaugePainter extends CustomPainter {
         Size.square(diameter);
     canvas.drawArc(
       rect,
-      2 * pi - (2 * pi * fillValue) - pi * 0.5,
+      clockWise ? -pi / 2 : 2 * pi - (2 * pi * fillValue) - pi * 0.5,
       pi * 2 * fillValue,
       false,
       paint,

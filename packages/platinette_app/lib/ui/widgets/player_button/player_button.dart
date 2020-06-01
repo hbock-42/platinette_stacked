@@ -35,6 +35,8 @@ class _PlayerButtonState extends State<PlayerButton>
   Animation<Color> colorAnimation;
   Animation<double> fillInnerCircleAnimation;
   Animation<double> fillMiddleCircleAnimation;
+  Animation<double> fillOuterCircleAnimation;
+  Animation<double> fillOuterOverCircleAnimation;
   Animation<double> textOpacityAnimation;
   Animation<double> dotScaleAnimation;
   Animation<double> dotOpacityAnimation;
@@ -60,6 +62,14 @@ class _PlayerButtonState extends State<PlayerButton>
             parent: controller,
             curve: Interval(0.0, 1.0, curve: Curves.easeOutCirc),
             reverseCurve: Curves.easeOut));
+    fillOuterOverCircleAnimation = Tween<double>(begin: 0, end: 1).animate(
+        CurvedAnimation(
+            parent: controller,
+            curve: Interval(0.4, 1.0, curve: Curves.easeInOut)));
+    fillOuterCircleAnimation = Tween<double>(begin: 1, end: 0).animate(
+        CurvedAnimation(
+            parent: controller,
+            curve: Interval(0.0, 0.4, curve: Curves.easeInOut)));
     fillMiddleCircleAnimation = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(
             parent: controller,
@@ -71,7 +81,7 @@ class _PlayerButtonState extends State<PlayerButton>
     textOpacityAnimation = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(
             parent: controller,
-            curve: Interval(0.5, 1.0, curve: Curves.easeInOut)));
+            curve: Interval(0.6, 0.8, curve: Curves.easeInCubic)));
     dotScaleAnimation = Tween<double>(begin: 0.3, end: 1).animate(
         CurvedAnimation(
             parent: controller,
@@ -97,6 +107,7 @@ class _PlayerButtonState extends State<PlayerButton>
                 alignment: Alignment.center,
                 children: [
                   buildOuterCircle(model: model),
+                  buildOuterOverCircle(),
                   buildMiddleCircle(model: model, constraints: constraints),
                   buildInnerCircle(constraints: constraints, model: model),
                   ...buildTexts(model: model, constraints: constraints),
@@ -137,27 +148,31 @@ class _PlayerButtonState extends State<PlayerButton>
     mapRpmToPositions(model.rpm);
   }
 
+  Widget buildOuterOverCircle() => CircularGauge(
+        backgroundColor: Colors.transparent,
+        color: Colors.white,
+        fillValue: fillOuterOverCircleAnimation.value,
+        strokeWidth: littleStrokeWidth,
+      );
+
   Widget buildOuterCircle({
-    Widget child,
     @required PlayerButtonViewModel model,
   }) =>
       IgnorePointer(
         ignoring: model.isPlaying,
         child: Listener(
           onPointerUp: (_) => model.switchPlayerState(),
-          child: CircularTimer(
+          child: CircularGauge(
             backgroundColor: Colors.transparent,
-            color: colorAnimation.value,
-            // color: model.isPlaying ? Colors.white : Colors.black,
-            fillValue: 1,
+            color: Colors.black,
+            fillValue: fillOuterCircleAnimation.value,
             strokeWidth: littleStrokeWidth,
-            child: child,
+            clockWise: true,
           ),
         ),
       );
 
   Widget buildMiddleCircle({
-    Widget child,
     @required BoxConstraints constraints,
     @required PlayerButtonViewModel model,
   }) =>
@@ -168,13 +183,12 @@ class _PlayerButtonState extends State<PlayerButton>
           child: Container(
             width: middleCircleDiameter,
             height: middleCircleDiameter,
-            child: CircularTimer(
+            child: CircularGauge(
               backgroundColor: Colors.transparent,
               // color: colorAnimation.value,
               color: Colors.white,
               fillValue: fillMiddleCircleAnimation.value,
               strokeWidth: littleStrokeWidth,
-              child: child,
             ),
           ),
         ),
@@ -189,7 +203,7 @@ class _PlayerButtonState extends State<PlayerButton>
         child: Container(
           width: innerCircleDiameter,
           height: innerCircleDiameter,
-          child: CircularTimer(
+          child: CircularGauge(
             backgroundColor: Colors.transparent,
             // color: colorAnimation.value,
             color: Colors.white,
