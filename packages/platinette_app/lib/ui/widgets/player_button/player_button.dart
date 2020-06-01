@@ -239,9 +239,12 @@ class _PlayerButtonState extends State<PlayerButton>
     @required BoxConstraints constraints,
   }) {
     var texts = List<Widget>();
-    texts.add(buildText("33", 0, () => model.select33Rpm(), constraints));
-    texts.add(buildText("45", 1, () => model.select45Rpm(), constraints));
-    texts.add(buildText("78", 2, () => model.select78Rpm(), constraints));
+    texts
+        .add(buildText("33", 0, () => model.select33Rpm(), constraints, model));
+    texts
+        .add(buildText("45", 1, () => model.select45Rpm(), constraints, model));
+    texts
+        .add(buildText("78", 2, () => model.select78Rpm(), constraints, model));
     return texts;
   }
 
@@ -250,6 +253,7 @@ class _PlayerButtonState extends State<PlayerButton>
     int i,
     void Function() onPointerUp,
     BoxConstraints constraints,
+    PlayerButtonViewModel model,
   ) {
     return Transform.rotate(
       angle: getRotationNumbers(i),
@@ -262,9 +266,12 @@ class _PlayerButtonState extends State<PlayerButton>
                 3),
         child: Opacity(
           opacity: textOpacityAnimation.value,
-          child: Listener(
-            onPointerUp: (_) => onPointerUp(),
-            child: Text(text, style: _textStyle),
+          child: IgnorePointer(
+            ignoring: !model.isPlaying,
+            child: Listener(
+              onPointerUp: (_) => onPointerUp(),
+              child: Text(text, style: _textStyle),
+            ),
           ),
         ),
       ),
