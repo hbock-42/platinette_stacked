@@ -7,8 +7,22 @@ class PlayerButtonViewModel extends ReactiveViewModel {
   bool get isPlaying => _playerService.state == PlayerState.playing;
 
   void switchPlayerState() {
-    print("switched");
     _playerService.switchPlayerState();
+    notifyListeners();
+  }
+
+  void select33Rpm() {
+    _playerService.select33Rpm();
+    notifyListeners();
+  }
+
+  void select45Rpm() {
+    _playerService.select45Rpm();
+    notifyListeners();
+  }
+
+  void select78Rpm() {
+    _playerService.select78Rpm();
     notifyListeners();
   }
 
