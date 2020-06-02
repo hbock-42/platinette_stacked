@@ -12,7 +12,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  Duration animationDuration = Duration(milliseconds: 500);
+  Duration animationDuration = Duration(milliseconds: 600);
   Curve animationCurve = Curves.easeInCubic;
 
   // screen
