@@ -15,7 +15,6 @@ class PlayerService with ReactiveServiceMixin {
   }
 
   void switchPlayerState() {
-    print("PlayerService: switchPlayerState");
     if (_state.value == PlayerState.playing) {
       pause();
     } else if (_state.value == PlayerState.paused) {

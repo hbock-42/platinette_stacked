@@ -165,12 +165,16 @@ class _PlayerButtonState extends State<PlayerButton>
         ignoring: model.isPlaying,
         child: Listener(
           onPointerUp: (_) => model.switchPlayerState(),
-          child: CircularGauge(
-            startAngle: pi / 2 + 2 * pi / 3,
-            color: Colors.black,
-            fillValue: fillOuterCircleAnimation.value,
-            strokeWidth: littleStrokeWidth,
-            clockWise: false,
+          // transparent container to make the zone clickable
+          child: Container(
+            color: Colors.transparent,
+            child: CircularGauge(
+              startAngle: pi / 2 + 2 * pi / 3,
+              color: Colors.black,
+              fillValue: fillOuterCircleAnimation.value,
+              strokeWidth: littleStrokeWidth,
+              clockWise: false,
+            ),
           ),
         ),
       );
@@ -204,6 +208,7 @@ class _PlayerButtonState extends State<PlayerButton>
       Listener(
         onPointerUp: (_) => model.switchPlayerState(),
         child: Container(
+          color: Colors.transparent,
           width: innerCircleDiameter,
           height: innerCircleDiameter,
           child: CircularGauge(
