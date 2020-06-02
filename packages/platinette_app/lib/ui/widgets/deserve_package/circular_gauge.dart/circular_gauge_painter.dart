@@ -8,15 +8,18 @@ class CircularGaugePainter extends CustomPainter {
   final double tempStrokeWidth;
   final double tempFillValue;
   final bool clockWise;
+  final double realStartAngleInRad;
 
   const CircularGaugePainter({
     @required this.color,
     @required double strokeWidth,
     @required this.clockWise,
+    double startAngleInRad,
     this.isForeground = false,
     double fillValue,
   })  : tempStrokeWidth = strokeWidth,
-        tempFillValue = fillValue;
+        tempFillValue = fillValue,
+        realStartAngleInRad = startAngleInRad ?? 0;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -25,14 +28,9 @@ class CircularGaugePainter extends CustomPainter {
       fillValue = 1;
     }
     double strokeWidth = this.tempStrokeWidth;
-    if (!isForeground && fillValue == 1) {
-      strokeWidth = 0;
-    }
     Paint paint = Paint()
       ..color = this.color
-      ..style = !isForeground && fillValue == 1
-          ? PaintingStyle.fill
-          : PaintingStyle.stroke
+      ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.square;
     var diameterWithStroke =
@@ -44,8 +42,8 @@ class CircularGaugePainter extends CustomPainter {
         Size.square(diameter);
     canvas.drawArc(
       rect,
-      clockWise ? -pi / 2 : 2 * pi - (2 * pi * fillValue) - pi * 0.5,
-      pi * 2 * fillValue,
+      -realStartAngleInRad,
+      clockWise ? pi * 2 * fillValue : -2 * pi * fillValue,
       false,
       paint,
     );

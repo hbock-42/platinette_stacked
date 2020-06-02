@@ -61,19 +61,19 @@ class _PlayerButtonState extends State<PlayerButton>
     fillOuterOverCircleAnimation = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(
             parent: controller,
-            curve: Interval(0.4, 0.8, curve: Curves.linear)));
+            curve: Interval(0.0, 0.8, curve: Curves.linear)));
     fillOuterCircleAnimation = Tween<double>(begin: 1, end: 0).animate(
         CurvedAnimation(
             parent: controller,
-            curve: Interval(0.0, 0.4, curve: Curves.linear)));
+            curve: Interval(0.0, 0.8, curve: Curves.linear)));
     fillMiddleCircleAnimation = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(
             parent: controller,
-            curve: Interval(0.4, 0.8, curve: Curves.linear)));
+            curve: Interval(0.0, 0.8, curve: Curves.linear)));
     fillInnerCircleAnimation = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(
             parent: controller,
-            curve: Interval(0.4, 0.8, curve: Curves.linear)));
+            curve: Interval(0.0, 0.8, curve: Curves.linear)));
     textOpacityAnimation = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(
             parent: controller,
@@ -151,7 +151,7 @@ class _PlayerButtonState extends State<PlayerButton>
   }
 
   Widget buildOuterOverCircle() => CircularGauge(
-        backgroundColor: Colors.transparent,
+        startAngle: pi / 2 + 2 * pi / 3,
         color: Colors.white,
         fillValue: fillOuterOverCircleAnimation.value,
         strokeWidth: littleStrokeWidth,
@@ -166,7 +166,7 @@ class _PlayerButtonState extends State<PlayerButton>
         child: Listener(
           onPointerUp: (_) => model.switchPlayerState(),
           child: CircularGauge(
-            backgroundColor: Colors.transparent,
+            startAngle: pi / 2 + 2 * pi / 3,
             color: Colors.black,
             fillValue: fillOuterCircleAnimation.value,
             strokeWidth: littleStrokeWidth,
@@ -187,8 +187,7 @@ class _PlayerButtonState extends State<PlayerButton>
             width: middleCircleDiameter,
             height: middleCircleDiameter,
             child: CircularGauge(
-              backgroundColor: Colors.transparent,
-              // color: colorAnimation.value,
+              startAngle: pi / 2 - 2 * pi / 3,
               color: Colors.white,
               fillValue: fillMiddleCircleAnimation.value,
               strokeWidth: littleStrokeWidth,
@@ -208,8 +207,7 @@ class _PlayerButtonState extends State<PlayerButton>
           width: innerCircleDiameter,
           height: innerCircleDiameter,
           child: CircularGauge(
-            backgroundColor: Colors.transparent,
-            // color: colorAnimation.value,
+            startAngle: pi / 2,
             color: Colors.white,
             fillValue: fillInnerCircleAnimation.value,
             strokeWidth: 1.5,
