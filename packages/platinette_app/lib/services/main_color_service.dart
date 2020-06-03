@@ -8,7 +8,7 @@ import 'package:stacked/stacked.dart';
 
 @lazySingleton
 class MainColorService with ReactiveServiceMixin {
-  RxValue<Color> _mainColor = RxValue(initial: Colors.orange);
+  RxValue<Color> _mainColor = RxValue(initial: Colors.white);
 
   Color get mainColor => _mainColor.value;
 
