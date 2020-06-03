@@ -3,6 +3,7 @@ import 'file_picker_desktop.dart' as desktop;
 
 class FilePicker {
   Future<String> chooseFile({List<String> extensions}) async {
+    print('in FilePicker.chooseFile');
     if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
       return desktop.chooseFile(extensions: extensions);
     } else {

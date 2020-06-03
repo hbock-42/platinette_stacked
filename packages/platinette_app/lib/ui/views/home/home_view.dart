@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:platinette_app/ui/widgets/get_file_button/get_file_button.dart';
 import 'package:platinette_app/ui/widgets/macaron/macaron.dart';
 import 'package:platinette_app/ui/widgets/player_button/player_button.dart';
 import 'package:stacked/stacked.dart';
@@ -164,17 +165,9 @@ class _HomeViewState extends State<HomeView> {
       : SizedBox(height: buttonSpacing);
 
   Widget fakeButton({Color color, void Function() onClick, double size}) =>
-      Listener(
-        onPointerUp: (_) => onClick.call(),
-        child: AnimatedContainer(
-          duration: animationDuration,
-          curve: animationCurve,
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(size),
-            border: Border.all(color: Colors.white),
-          ),
-        ),
+      Container(
+        width: size,
+        height: size,
+        child: GetFileButton(),
       );
 }

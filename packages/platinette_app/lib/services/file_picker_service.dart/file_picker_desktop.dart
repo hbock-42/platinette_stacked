@@ -1,6 +1,7 @@
 import 'package:file_chooser/file_chooser.dart';
 
 Future<String> chooseFile({List<String> extensions}) async {
+  print('in choose file desktop, file extensions: $extensions');
   FileChooserResult chooserResult = await showOpenPanel(
     allowedFileTypes: extensions == null
         ? null
