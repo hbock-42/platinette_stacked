@@ -20,7 +20,6 @@ class FileIOService with ReactiveServiceMixin {
   }
 
   Future loadMacaron() async {
-    print('In load macaron');
     String macaronPath =
         await _filePickerService.chooseFile(extensions: ['png']);
     _macaronData.value = await FileIO.dataFromPath(macaronPath);
