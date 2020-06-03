@@ -5,23 +5,30 @@ import 'package:platinette_app/ui/widgets/get_file_button/get_file_button_viewmo
 import 'package:platinette_app/ui/widgets/on_tap_listener/on_tap_listener.dart';
 import 'package:stacked/stacked.dart';
 
-class GetFileButton extends StatefulWidget {
-  @override
-  _GetFileButtonState createState() => _GetFileButtonState();
-}
+class GetFileButton extends StatelessWidget {
+  final Duration animationDuration;
+  final Curve animationCurve;
 
-class _GetFileButtonState extends State<GetFileButton> {
+  const GetFileButton({
+    Key key,
+    @required this.animationDuration,
+    this.animationCurve,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) =>
-      ViewModelBuilder<GetFileButtonViewModel>.nonReactive(
+      ViewModelBuilder<GetFileButtonViewModel>.reactive(
         builder: (context, model, child) => LayoutBuilder(
           builder: (context, constraints) => OnTapListener(
             onTap: () => model.loadMacaron(),
-            child: Container(
+            child: AnimatedContainer(
+              duration: animationDuration,
+              curve: animationCurve,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
                     max(constraints.maxHeight, constraints.maxWidth)),
-                border: Border.all(color: Colors.white),
+                border: Border.all(
+                  color: model.isPlaying ? Colors.white : Colors.black,
+                ),
               ),
             ),
           ),

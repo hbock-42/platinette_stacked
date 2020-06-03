@@ -167,6 +167,9 @@ class _HomeViewState extends State<HomeView> {
       Container(
         width: size,
         height: size,
-        child: GetFileButton(),
+        child: GetFileButton(
+          animationDuration: animationDuration,
+          animationCurve: animationCurve,
+        ),
       );
 }
