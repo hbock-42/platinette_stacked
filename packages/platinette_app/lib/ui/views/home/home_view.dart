@@ -85,7 +85,7 @@ class _HomeViewState extends State<HomeView> {
     vinylSize = isPortrait ? vinylScale * width : vinylScale * height;
     vinylStartMargin = model.isPlaying ? -vinylSize * 0.25 : bigSize * 0.1;
 
-    macaronSize = vinylSize * 0.33;
+    macaronSize = vinylSize * 0.46;
 
     buttonSize = smallSize / 6;
     buttonSize = min(buttonSize, 65);
@@ -116,7 +116,6 @@ class _HomeViewState extends State<HomeView> {
               curve: animationCurve,
               width: macaronSize,
               height: macaronSize,
-              color: Colors.blue,
               child: Macaron(),
             ),
           ],

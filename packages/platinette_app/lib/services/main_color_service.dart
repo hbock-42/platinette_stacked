@@ -18,7 +18,8 @@ class MainColorService with ReactiveServiceMixin {
 
   void setMainColorFromImageData(Uint8List imageData) {
     if (imageData != null) {
-      _mainColor.value = MainColor.fromImageBytes(imageData);
+      _mainColor.value = MainColor.fromImageBytes(imageData,
+          staturationCoef: 0.3, valueCoef: 1.4);
     }
   }
 }
