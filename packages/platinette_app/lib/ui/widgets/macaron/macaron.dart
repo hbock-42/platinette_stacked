@@ -19,7 +19,7 @@ class Macaron extends StatelessWidget {
 
   Widget buildMacaron(MacaronViewModel model) {
     if (model.macaronData == null) {
-      return Container(color: Colors.orange);
+      return Container();
     } else {
       return Transform.rotate(
         angle: rotation ?? 0,

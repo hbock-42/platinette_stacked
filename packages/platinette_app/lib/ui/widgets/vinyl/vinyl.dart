@@ -14,10 +14,7 @@ class Vinyl extends StatelessWidget {
               width: constraints.maxWidth,
               height: constraints.maxHeight,
               child: FittedBox(
-                child: Image.asset(
-                  "assets/images/vinyl.png",
-                  fit: BoxFit.fill,
-                ),
+                child: Image.asset("assets/images/vinyl.png"),
               ),
             ),
             SizedBox(

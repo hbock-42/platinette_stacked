@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:platinette_app/ui/widgets/get_file_button/get_file_button.dart';
-import 'package:platinette_app/ui/widgets/macaron/macaron.dart';
 import 'package:platinette_app/ui/widgets/player_button/player_button.dart';
 import 'package:platinette_app/ui/widgets/vinyl/vinyl.dart';
 import 'package:stacked/stacked.dart';
@@ -35,9 +34,17 @@ class _HomeViewState extends State<HomeView> {
       isPortrait ? vinylTop + vinylSize : vinylLeft + vinylSize;
   double get vinylCenterCircleEnd =>
       isPortrait ? vinylTop + vinylSize * 0.75 : vinylLeft + vinylSize * 0.75;
+  double get vinylBottom => vinylTop + vinylSize;
 
-  // macaron
-  double macaronSize;
+  // vinyl shadow
+  double vinylShadowSize;
+  double get halfvinylShadow => vinylShadowSize / 2;
+  double get vinylShadowLeft => isPortrait
+      ? halfWidth - halfvinylShadow
+      : vinylLeft + halfVinyl - halfvinylShadow;
+  double get vinylShadowTop => isPortrait
+      ? vinylTop + halfVinyl - halfvinylShadow
+      : halfHeight - halfvinylShadow;
 
   // buttons
   double buttonSize;
@@ -65,6 +72,7 @@ class _HomeViewState extends State<HomeView> {
           child: Stack(
             alignment: isPortrait ? Alignment.topCenter : Alignment.centerLeft,
             children: [
+              buildVinylShadow(),
               buildVinyl(),
               buildButtons(model),
             ],
@@ -86,7 +94,7 @@ class _HomeViewState extends State<HomeView> {
     vinylSize = isPortrait ? vinylScale * width : vinylScale * height;
     vinylStartMargin = model.isPlaying ? -vinylSize * 0.25 : bigSize * 0.1;
 
-    macaronSize = vinylSize * 0.46;
+    vinylShadowSize = vinylSize * 1.3;
 
     buttonSize = smallSize / 6;
     buttonSize = min(buttonSize, 65);
@@ -97,6 +105,18 @@ class _HomeViewState extends State<HomeView> {
         : vinylEnd + bigSize * 0.1;
     buttonsEndMargin = bigSize * 0.1;
   }
+
+  Widget buildVinylShadow() => AnimatedPositioned(
+        duration: animationDuration,
+        curve: animationCurve,
+        width: vinylShadowSize,
+        height: vinylShadowSize,
+        top: vinylShadowTop,
+        left: vinylShadowLeft,
+        child: FittedBox(
+          child: Image.asset("assets/images/vinyl_shadow.png"),
+        ),
+      );
 
   Widget buildVinyl() => AnimatedPositioned(
         duration: animationDuration,
