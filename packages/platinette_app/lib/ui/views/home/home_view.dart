@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:platinette_app/ui/widgets/get_file_button/get_file_button.dart';
 import 'package:platinette_app/ui/widgets/macaron/macaron.dart';
 import 'package:platinette_app/ui/widgets/player_button/player_button.dart';
+import 'package:platinette_app/ui/widgets/vinyl/vinyl.dart';
 import 'package:stacked/stacked.dart';
 
 import 'home_viewmodel.dart';
@@ -104,22 +105,7 @@ class _HomeViewState extends State<HomeView> {
         left: vinylLeft,
         width: vinylSize,
         height: vinylSize,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Image.asset(
-              "assets/images/vinyl.png",
-              fit: BoxFit.fill,
-            ),
-            AnimatedContainer(
-              duration: animationDuration,
-              curve: animationCurve,
-              width: macaronSize,
-              height: macaronSize,
-              child: Macaron(),
-            ),
-          ],
-        ),
+        child: Vinyl(),
       );
 
   Widget buildButtons(HomeViewModel model) {
