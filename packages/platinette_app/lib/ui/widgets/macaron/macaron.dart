@@ -18,7 +18,7 @@ class Macaron extends StatelessWidget {
   }
 
   Widget buildMacaron(MacaronViewModel model) {
-    if (model.macaronFile == null) {
+    if (model.macaronData == null) {
       return Container(color: Colors.orange);
     } else {
       return Transform.rotate(
@@ -27,7 +27,8 @@ class Macaron extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: DecorationImage(
-              image: FileImage(model.macaronFile),
+              // image: FileImage(model.macaronFile),
+              image: MemoryImage(model.macaronData),
               fit: BoxFit.fill,
             ),
           ),
