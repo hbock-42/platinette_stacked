@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:platinette_app/ui/widgets/macaron/macaron.dart';
 import 'package:platinette_app/ui/widgets/player_button/player_button.dart';
 import 'package:stacked/stacked.dart';
 
@@ -32,6 +33,9 @@ class _HomeViewState extends State<HomeView> {
       isPortrait ? vinylTop + vinylSize : vinylLeft + vinylSize;
   double get vinylCenterCircleEnd =>
       isPortrait ? vinylTop + vinylSize * 0.75 : vinylLeft + vinylSize * 0.75;
+
+  // macaron
+  double macaronSize;
 
   // buttons
   double buttonSize;
@@ -80,6 +84,8 @@ class _HomeViewState extends State<HomeView> {
     vinylSize = isPortrait ? vinylScale * width : vinylScale * height;
     vinylStartMargin = model.isPlaying ? -vinylSize * 0.25 : bigSize * 0.1;
 
+    macaronSize = vinylSize * 0.33;
+
     buttonSize = smallSize / 6;
     buttonSize = min(buttonSize, 65);
     buttonSpacing = buttonSize * 1;
@@ -97,11 +103,22 @@ class _HomeViewState extends State<HomeView> {
         left: vinylLeft,
         width: vinylSize,
         height: vinylSize,
-        child: Image.asset(
-          "assets/images/vinyl.png",
-          width: vinylSize,
-          height: vinylSize,
-          fit: BoxFit.fill,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Image.asset(
+              "assets/images/vinyl.png",
+              fit: BoxFit.fill,
+            ),
+            AnimatedContainer(
+              duration: animationDuration,
+              curve: animationCurve,
+              width: macaronSize,
+              height: macaronSize,
+              color: Colors.blue,
+              child: Macaron(),
+            ),
+          ],
         ),
       );
 
