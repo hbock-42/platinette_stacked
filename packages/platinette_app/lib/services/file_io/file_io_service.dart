@@ -24,7 +24,10 @@ class FileIOService with ReactiveServiceMixin {
   Future loadMacaron() async {
     String macaronPath =
         await _filePickerService.chooseFile(extensions: ['png']);
-    _macaronData.value = await FileIO.dataFromPath(macaronPath);
-    _mainColorService.setMainColorFromImageData(_macaronData.value);
+    Uint8List macaronData = await FileIO.dataFromPath(macaronPath);
+    if (macaronData != null) {
+      _macaronData.value = macaronData;
+      _mainColorService.setMainColorFromImageData(_macaronData.value);
+    }
   }
 }
