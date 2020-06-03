@@ -60,7 +60,7 @@ class _HomeViewState extends State<HomeView> {
       builder: (context, model, child) {
         computeSizes(model);
         return Container(
-          color: Colors.purple,
+          color: model.mainColor ?? Colors.purple,
           child: Stack(
             alignment: isPortrait ? Alignment.topCenter : Alignment.centerLeft,
             children: [
