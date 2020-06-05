@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:platinette_app/ui/widgets/macaron/macaron.dart';
 
 class Vinyl extends StatelessWidget {
+  final double rotation;
+
+  const Vinyl({Key key, this.rotation}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -20,7 +23,7 @@ class Vinyl extends StatelessWidget {
             SizedBox(
               width: macaronSize,
               height: macaronSize,
-              child: Macaron(),
+              child: Macaron(rotation: rotation),
             ),
           ],
         );

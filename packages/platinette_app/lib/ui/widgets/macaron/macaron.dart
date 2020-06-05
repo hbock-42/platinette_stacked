@@ -27,7 +27,6 @@ class Macaron extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: DecorationImage(
-              // image: FileImage(model.macaronFile),
               image: MemoryImage(model.macaronData),
               fit: BoxFit.fill,
             ),
