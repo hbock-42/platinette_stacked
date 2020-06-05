@@ -36,7 +36,7 @@ class PlayerService with ReactiveServiceMixin {
     _state.value = PlayerState.paused;
   }
 
-  void startRecord() {
+  void startRecording() {
     _stateBeforeRecording = _state.value;
     pause();
     _recording.value = true;

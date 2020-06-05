@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:platinette_app/ui/widgets/get_file_button/get_file_button.dart';
 import 'package:platinette_app/ui/widgets/player_button/player_button.dart';
+import 'package:platinette_app/ui/widgets/record_button/record_button.dart';
 import 'package:platinette_app/ui/widgets/recordable_vinyl/recordable_vinyl.dart';
 import 'package:stacked/stacked.dart';
 
@@ -130,14 +131,7 @@ class _HomeViewState extends State<HomeView> {
 
   Widget buildButtons(HomeViewModel model) {
     var children = List<Widget>();
-    // children.add(Container(
-    //   width: buttonSize,
-    //   height: buttonSize,
-    //   child: LoadButton(
-    //     animationDuration: animationDuration * 2,
-    //   ),
-    // ));
-    children.add(fakeButton(color: Colors.green, size: buttonSize));
+    children.add(loadButton(color: Colors.green, size: buttonSize));
     children.add(buttonSpacer());
     children.add(AnimatedContainer(
       duration: animationDuration,
@@ -149,7 +143,7 @@ class _HomeViewState extends State<HomeView> {
       ),
     ));
     children.add(buttonSpacer());
-    children.add(fakeButton(color: Colors.blue, size: buttonSize));
+    children.add(startRecordButton(color: Colors.blue, size: buttonSize));
     return AnimatedPositioned(
       duration: animationDuration,
       curve: animationCurve,
@@ -169,11 +163,22 @@ class _HomeViewState extends State<HomeView> {
       ? SizedBox(width: buttonSpacing)
       : SizedBox(height: buttonSpacing);
 
-  Widget fakeButton({Color color, void Function() onClick, double size}) =>
-      Container(
+  Widget loadButton({Color color, void Function() onClick, double size}) =>
+      SizedBox(
         width: size,
         height: size,
         child: GetFileButton(
+          animationDuration: animationDuration,
+          animationCurve: animationCurve,
+        ),
+      );
+
+  Widget startRecordButton(
+          {Color color, void Function() onClick, double size}) =>
+      SizedBox(
+        width: size,
+        height: size,
+        child: RecordButton(
           animationDuration: animationDuration,
           animationCurve: animationCurve,
         ),
