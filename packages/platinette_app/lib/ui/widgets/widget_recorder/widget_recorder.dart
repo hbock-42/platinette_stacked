@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:ui' as ui;
@@ -18,10 +20,31 @@ class WidgetRecorder extends StatefulWidget {
 }
 
 class _WidgetRecorderState extends State<WidgetRecorder> {
+  WidgetRecorderController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.controller == null) {
+      _controller = WidgetRecorderController(childAnimationControler: null);
+    } else {
+      _controller = widget.controller;
+    }
+  }
+
+  @override
+  void didUpdateWidget(WidgetRecorder oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      _controller = widget.controller;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return RepaintBoundary(
-      key: widget.controller._containerKey,
+      key: _controller._containerKey,
       child: widget.child,
     );
   }
@@ -33,18 +56,21 @@ class WidgetRecorderController {
   List<img.Image> _frameImages;
   final AnimationController childAnimationControler;
   final Fps fps;
+  Completer _newFrameAvailable;
 
   int get _recordedFrameCount => _frameImages == null ? 0 : _frameImages.length;
 
   WidgetRecorderController({
     @required this.childAnimationControler,
     this.fps = Fps.Fps25,
-  }) : assert(childAnimationControler != null) {
+  }) {
     _containerKey = GlobalKey();
-    _recorderInfo = RecorderInfo(
-      Fps.Fps50,
-      childAnimationControler.duration.inMilliseconds,
-    );
+    if (childAnimationControler != null) {
+      _recorderInfo = RecorderInfo(
+        Fps.Fps50,
+        childAnimationControler.duration.inMilliseconds,
+      );
+    }
   }
 
   Future<img.Animation> captureAnimation({
@@ -57,6 +83,9 @@ class WidgetRecorderController {
         readyForNextFrame = false;
         childAnimationControler.value =
             _recordedFrameCount / _recorderInfo.totalFrameNeeded;
+        requestFrameReady();
+        _newFrameAvailable = Completer();
+        await _newFrameAvailable.future;
         WidgetsBinding.instance.addPostFrameCallback((_) async {
           ui.Image image = await _captureAsUiImage(pixelRatio: pixelRatio);
           _addUiImageToAnimation(image);
@@ -98,6 +127,54 @@ class WidgetRecorderController {
         throw (Exception);
       }
     });
+  }
+
+  void requestFrameReady() {
+    notifyListeners();
+  }
+
+  void newFrameReady() {
+    print('new frame ready');
+    _newFrameAvailable.complete();
+  }
+
+  final ObserverList<VoidCallback> _listeners = ObserverList<VoidCallback>();
+
+  /// Calls the listener every time a new frame is requested.
+  ///
+  /// Listeners can be removed with [removeListener].
+  void addListener(VoidCallback listener) {
+    _listeners.add(listener);
+  }
+
+  /// Stop calling the listener every time a new frame is requested.
+  ///
+  /// Listeners can be added with [addListener].
+  void removeListener(VoidCallback listener) {
+    final bool removed = _listeners.remove(listener);
+  }
+
+  /// Calls all the listeners.
+  ///
+  /// If listeners are added or removed during this function, the modifications
+  /// will not change which listeners are called during this iteration.
+  void notifyListeners() {
+    final List<VoidCallback> localListeners =
+        List<VoidCallback>.from(_listeners);
+    for (final VoidCallback listener in localListeners) {
+      InformationCollector collector;
+      try {
+        if (_listeners.contains(listener)) listener();
+      } catch (exception, stack) {
+        FlutterError.reportError(FlutterErrorDetails(
+          exception: exception,
+          stack: stack,
+          context:
+              ErrorDescription('while notifying listeners for $runtimeType'),
+          informationCollector: collector,
+        ));
+      }
+    }
   }
 }
 

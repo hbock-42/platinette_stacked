@@ -39,7 +39,7 @@ class _RecordableVinylState extends State<RecordableVinyl>
         return AnimatedBuilder(
           animation: animationController,
           builder: (context, child) => WidgetRecorder(
-            controller: null,
+            controller: widgetRecorderController,
             child: Vinyl(rotation: animationController.value * pi * 2),
           ),
         );
@@ -71,8 +71,17 @@ class _RecordableVinylState extends State<RecordableVinyl>
       widgetRecorderController = WidgetRecorderController(
         childAnimationControler: animationController,
         fps: Fps.Fps10,
-      )..captureAnimation(pixelRatio: 0.5);
+      );
+      widgetRecorderController.addListener(notifyNewFrameReady);
+      widgetRecorderController.captureAnimation(pixelRatio: 0.5);
+      // widgetRecorderController.removeListener(notifyNewFrameReady);
     }
+  }
+
+  void notifyNewFrameReady() {
+    print("in callb");
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => widgetRecorderController.newFrameReady());
   }
 
   Duration animationDurationFromRpm(int rpm) {
