@@ -26,6 +26,7 @@ dependencies:
   google_fonts: ^1.1.0
   main_color: ^0.0.4
   screenshot: ^0.1.1
+  image: ^2.1.13
 
   file_chooser:
     path: ../../flutter-desktop-embedding/plugins/file_chooser

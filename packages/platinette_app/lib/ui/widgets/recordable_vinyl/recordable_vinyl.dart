@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:platinette_app/services/player_service.dart';
 import 'package:platinette_app/ui/widgets/recordable_vinyl/recordable_vinyl_viewmodel.dart';
 import 'package:platinette_app/ui/widgets/vinyl/vinyl.dart';
+import 'package:platinette_app/ui/widgets/widget_recorder/widget_recorder.dart';
 import 'package:stacked/stacked.dart';
 
 class RecordableVinyl extends StatefulWidget {
@@ -17,6 +17,7 @@ class _RecordableVinylState extends State<RecordableVinyl>
   bool isPlaying;
   int rpm;
   AnimationController animationController;
+  WidgetRecorderController widgetRecorderController;
 
   @override
   void initState() {
@@ -37,8 +38,10 @@ class _RecordableVinylState extends State<RecordableVinyl>
         listenValueChange(model);
         return AnimatedBuilder(
           animation: animationController,
-          builder: (context, child) =>
-              Vinyl(rotation: animationController.value * pi * 2),
+          builder: (context, child) => WidgetRecorder(
+            controller: null,
+            child: Vinyl(rotation: animationController.value * pi * 2),
+          ),
         );
       },
       viewModelBuilder: () => RecordableVinylViewModel(),
@@ -65,6 +68,10 @@ class _RecordableVinylState extends State<RecordableVinyl>
 
     if (recording == null || recording != model.isRecording) {
       recording = model.isRecording;
+      widgetRecorderController = WidgetRecorderController(
+        childAnimationControler: animationController,
+        fps: Fps.Fps10,
+      )..captureAnimation(pixelRatio: 0.5);
     }
   }
 
