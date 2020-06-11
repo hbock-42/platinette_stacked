@@ -77,21 +77,22 @@ class WidgetRecorderController {
     double pixelRatio: 1,
   }) async {
     _frameImages = List<img.Image>();
-    bool readyForNextFrame = true;
+    // bool readyForNextFrame = true;
     while (_recordedFrameCount < _recorderInfo.totalFrameNeeded) {
-      if (readyForNextFrame) {
-        readyForNextFrame = false;
-        childAnimationControler.value =
-            _recordedFrameCount / _recorderInfo.totalFrameNeeded;
-        requestFrameReady();
-        _newFrameAvailable = Completer();
-        await _newFrameAvailable.future;
-        WidgetsBinding.instance.addPostFrameCallback((_) async {
-          ui.Image image = await _captureAsUiImage(pixelRatio: pixelRatio);
-          _addUiImageToAnimation(image);
-          readyForNextFrame = true;
-        });
-      }
+      // readyForNextFrame = false;
+      childAnimationControler.value =
+          _recordedFrameCount / _recorderInfo.totalFrameNeeded;
+      requestFrameReady();
+      _newFrameAvailable = Completer();
+      print('completer started');
+      await _newFrameAvailable.future;
+      print('completer done');
+      ui.Image image = await _captureAsUiImage(pixelRatio: pixelRatio);
+      await _addUiImageToAnimation(image);
+      // WidgetsBinding.instance.addPostFrameCallback((_) async {
+
+      //   readyForNextFrame = true;
+      // });
     }
     return _createAnimation();
   }
@@ -134,7 +135,6 @@ class WidgetRecorderController {
   }
 
   void newFrameReady() {
-    print('new frame ready');
     _newFrameAvailable.complete();
   }
 

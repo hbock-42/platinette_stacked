@@ -5,6 +5,7 @@ import 'package:platinette_app/ui/widgets/recordable_vinyl/recordable_vinyl_view
 import 'package:platinette_app/ui/widgets/vinyl/vinyl.dart';
 import 'package:platinette_app/ui/widgets/widget_recorder/widget_recorder.dart';
 import 'package:stacked/stacked.dart';
+import 'package:image/image.dart' as img;
 
 class RecordableVinyl extends StatefulWidget {
   @override
@@ -73,9 +74,15 @@ class _RecordableVinylState extends State<RecordableVinyl>
         fps: Fps.Fps10,
       );
       widgetRecorderController.addListener(notifyNewFrameReady);
-      widgetRecorderController.captureAnimation(pixelRatio: 0.5);
+      widgetRecorderController
+          .captureAnimation(pixelRatio: 0.5)
+          .then((animation) {});
       // widgetRecorderController.removeListener(notifyNewFrameReady);
     }
+  }
+
+  void onRecordEnded(img.Animation animation) {
+    widgetRecorderController.removeListener(notifyNewFrameReady);
   }
 
   void notifyNewFrameReady() {
