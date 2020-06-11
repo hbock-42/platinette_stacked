@@ -36,10 +36,20 @@ class PlayerService with ReactiveServiceMixin {
     _state.value = PlayerState.paused;
   }
 
+  /// [startRecording] pauses the player and change the player
+  /// state to [PlayerState.paused]
   void startRecording() {
     _stateBeforeRecording = _state.value;
     pause();
     _recording.value = true;
+  }
+
+  /// [notifyRecordingEnd] should be called at the end of the recording
+  void notifyRecordingEnd() {
+    if (_stateBeforeRecording == PlayerState.playing) {
+      play();
+    }
+    _recording.value = false;
   }
 
   void select33Rpm() {

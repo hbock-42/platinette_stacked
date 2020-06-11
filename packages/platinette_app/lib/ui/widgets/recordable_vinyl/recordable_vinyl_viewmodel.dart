@@ -13,6 +13,7 @@ class RecordableVinylViewModel extends ReactiveViewModel {
   bool get isPlaying => _playerService.state == PlayerState.playing;
 
   void saveAnimation(Animation animation) {
+    _playerService.notifyRecordingEnd();
     _animationRecorderService.saveAnimation(animation);
   }
 
