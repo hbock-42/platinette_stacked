@@ -17,7 +17,7 @@ class PlayerService with ReactiveServiceMixin {
   PlayerState _stateBeforeRecording;
 
   PlayerService() {
-    listenToReactiveValues([_state, _rpm]);
+    listenToReactiveValues([_state, _rpm, _recording]);
   }
 
   void switchPlayerState() {
