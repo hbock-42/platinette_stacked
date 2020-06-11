@@ -97,7 +97,7 @@ class WidgetRecorderController {
     List<int> pngBytes = byteData.buffer.asUint8List();
     img.Image decodedImage = img.decodeImage(pngBytes)
       ..duration = frameDuration.inMilliseconds;
-    decodedImage.blendMethod = img.BlendMode.source;
+    decodedImage.blendMethod = img.BlendMode.over;
     _frameImages.add(decodedImage);
   }
 

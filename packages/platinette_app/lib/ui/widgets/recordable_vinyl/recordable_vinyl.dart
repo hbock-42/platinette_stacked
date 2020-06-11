@@ -76,7 +76,7 @@ class _RecordableVinylState extends State<RecordableVinyl>
         );
         widgetRecorderController.addListener(notifyNewFrameReady);
         widgetRecorderController
-            .captureAnimation(pixelRatio: 0.5)
+            .captureAnimation()
             .then((animation) => onRecordEnded(animation, model));
       }
     }
