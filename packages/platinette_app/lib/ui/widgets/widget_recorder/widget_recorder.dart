@@ -77,22 +77,14 @@ class WidgetRecorderController {
     double pixelRatio: 1,
   }) async {
     _frameImages = List<img.Image>();
-    // bool readyForNextFrame = true;
     while (_recordedFrameCount < _recorderInfo.totalFrameNeeded) {
-      // readyForNextFrame = false;
       childAnimationControler.value =
           _recordedFrameCount / _recorderInfo.totalFrameNeeded;
       requestFrameReady();
       _newFrameAvailable = Completer();
-      print('completer started');
       await _newFrameAvailable.future;
-      print('completer done');
       ui.Image image = await _captureAsUiImage(pixelRatio: pixelRatio);
       await _addUiImageToAnimation(image);
-      // WidgetsBinding.instance.addPostFrameCallback((_) async {
-
-      //   readyForNextFrame = true;
-      // });
     }
     return _createAnimation();
   }
