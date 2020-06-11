@@ -68,8 +68,6 @@ class _RecordableVinylState extends State<RecordableVinyl>
       }
     }
 
-    // Todo: completely change this system
-    // actualy, if there is no rebuild, there is no recording
     if (recording == null || recording != model.isRecording) {
       print('model is reco ${model.isRecording}');
       recording = model.isRecording;
