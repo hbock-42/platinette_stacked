@@ -69,14 +69,16 @@ class _RecordableVinylState extends State<RecordableVinyl>
 
     if (recording == null || recording != model.isRecording) {
       recording = model.isRecording;
-      widgetRecorderController = WidgetRecorderController(
-        childAnimationControler: animationController,
-        fps: Fps.Fps10,
-      );
-      widgetRecorderController.addListener(notifyNewFrameReady);
-      widgetRecorderController
-          .captureAnimation(pixelRatio: 0.5)
-          .then((animation) => onRecordEnded(animation, model));
+      if (recording) {
+        widgetRecorderController = WidgetRecorderController(
+          childAnimationControler: animationController,
+          fps: Fps.Fps10,
+        );
+        widgetRecorderController.addListener(notifyNewFrameReady);
+        widgetRecorderController
+            .captureAnimation(pixelRatio: 0.5)
+            .then((animation) => onRecordEnded(animation, model));
+      }
     }
   }
 
@@ -86,7 +88,6 @@ class _RecordableVinylState extends State<RecordableVinyl>
   }
 
   void notifyNewFrameReady() {
-    print("in callb");
     WidgetsBinding.instance
         .addPostFrameCallback((_) => widgetRecorderController.newFrameReady());
   }
