@@ -36,7 +36,6 @@ class _RecordableVinylState extends State<RecordableVinyl>
   Widget build(BuildContext context) {
     return ViewModelBuilder<RecordableVinylViewModel>.reactive(
       builder: (context, model, child) {
-        print('model.isRecoding LOL = ${model.isRecording}');
         listenValueChange(model);
         return AnimatedBuilder(
           animation: animationController,
@@ -69,7 +68,6 @@ class _RecordableVinylState extends State<RecordableVinyl>
     }
 
     if (recording == null || recording != model.isRecording) {
-      print('model is reco ${model.isRecording}');
       recording = model.isRecording;
       if (recording) {
         widgetRecorderController = WidgetRecorderController(
