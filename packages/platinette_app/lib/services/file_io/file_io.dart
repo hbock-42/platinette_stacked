@@ -12,4 +12,13 @@ class FileIO {
     }
     return fileData;
   }
+
+  static Future saveBytesAsync(List<int> bytes, String path) async {
+    try {
+      var file = File(path);
+      await file.writeAsBytes(bytes);
+    } catch (ex) {
+      print('FileIO in file_io.dart, saveBytesAsync, exception: $ex');
+    }
+  }
 }

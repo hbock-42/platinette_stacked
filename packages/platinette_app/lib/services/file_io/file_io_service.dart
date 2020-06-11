@@ -30,4 +30,8 @@ class FileIOService with ReactiveServiceMixin {
       _mainColorService.setMainColorFromImageData(_macaronData.value);
     }
   }
+
+  Future saveBytesAsync(List<int> bytes, String path) async {
+    await FileIO.saveBytesAsync(bytes, path);
+  }
 }
